@@ -1,10 +1,11 @@
+library(dplyr)
+library(tidyr)
+
+#Data Collection
 car_1<-readr::read_csv("used_cars_data//Car_1.csv")
 Car_2<-readr::read_csv("used_cars_data//Car_2.csv")
 Car_3<-readr::read_csv("used_cars_data//Car_3.csv")
 Car_4<-readr::read_csv("used_cars_data//Car_4.csv")
- 
-library(dplyr)
-library(tidyr)
 
 #Reorder for Car_1
 car_1 <- car_1[, c("name","year","km_driven","fuel","seller_type","transmission","owner","selling_price")]
@@ -91,5 +92,11 @@ colnames(Car_4)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transm
 combined_cars <- rbind(car_1, Car_2, Car_3, Car_4)
 
 
+#saving combined cars as csv
+write.csv(combined_cars,"combined_cars.csv", row.names = FALSE)
+
+#reading csv
+my_data <- read.csv("combined_cars.csv")
+print(my_data)
 
 
