@@ -67,7 +67,7 @@ Car_3 <- Car_3[, c("name","year","km_driven","fuel","seller_type","transmission"
 
 
 #Rename the column
-colnames(Car_3)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transmission","no_own","Selling_price","Present_Price")
+colnames(Car_3)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transmission","no_own","Selling_price")
 
 
 #combining two colums together for car_4
@@ -97,10 +97,11 @@ Car_4 <- Car_4[, c("Name","Year","Kilometer","Fuel Type","Seller Type","Transmis
 colnames(Car_4)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transmission","no_own","Selling_price","Present_Price")
 
 
+# Combine data frames using r_bind
+combined_cars <- rbind(car_1, Car_2, Car_3, Car_4)
 
-# Merge the tables using a loop
-merged_cars <- Reduce(function(x, y) merge(x, y, all = TRUE), list(car_1,Car_2,Car_3,Car_4))
-
-# View the merged data frame
-View(merged_cars)
+# Print the combined data frame
+print(combined_cars) 
+View(combined_cars)
+str(combined_cars)
 
