@@ -6,13 +6,13 @@ Develop a predictive model for used car valuation, leveraging key features such 
 
 This R script performs data cleaning and preprocessing on four car datasets (car_1, Car_2, Car_3, and Car_4) before combining them into a single dataset. The script uses the \`dplyr\` and \`tidyr\` libraries for data manipulation.
 
-####  Libraries
+#### Libraries
 
 \* dplyr: For data manipulation and transformation.
 
 \* tidyr: For tidying data.
 
--    Data Preprocessing Steps
+-   Data Preprocessing Steps
 
 The script performs the following steps for each dataset:
 
