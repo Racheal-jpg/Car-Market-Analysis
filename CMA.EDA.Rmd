@@ -1,0 +1,177 @@
+### Car Market Exploratory Data Analysis.
+
+#### objectives
+
+**Libraries**
+
+```{r}
+library(dplyr) #Data Manipulation
+library(ggplot2) # Data Visualization 
+library(tidyr) #Data Tidying and Reshaping
+library(scales) #Scale Balancing
+library(ggcorrplot)
+```
+
+Data Collection
+
+```{r}
+all_cars <- readr::read_csv("combined_cars.csv")
+```
+
+Data Information
+
+Data size
+
+```{r}
+dim(combined_cars)
+
+str(combined_cars)
+```
+
+Data structure
+
+```{r}
+lapply(colnames(combined_cars), is.character)
+```
+
+**Data Insight to generate**
+
+these are the following insight we are going to generate:
+
+-   Distribution of Number of Car Owner.
+
+-   Average Selling Price by Car Owner.
+
+-   Distribution of Fuel Type.
+
+-   Distribution of Price.
+
+-   Relationship Of Number of Previous Owners
+
+    #### Distribution Of Numbers Of Previous Owners
+
+    ```{r}
+    owner_dist <- combined_cars %>% group_by(no_own) %>% summarise(owner_count = n()) %>% arrange(desc(owner_count))
+
+    #color
+    colors <- colorRampPalette(c("#FFFF00", "#FF0000"))(nrow(owner_dist))
+
+    barplot(owner_dist$owner_count, names.arg = owner_dist$no_own, main = "Distribution of Number Of Previous owners",
+            xlab = " Numbers of owners ", ylab = "Count",
+            col = colors)
+    abline(h = mean(owner_dist$owner_count), lty = 3 , lwd =3)
+    ```
+
+Average selling price of cars owners
+
+```{r}
+owner_price <- combined_cars %>% group_by(no_own) %>% summarise(avg_price = mean(Selling_price)) %>% arrange(desc(avg_price))
+
+#colors
+colors_blyl <- colorRampPalette(c("#0000FF","#ADD8E6"))(nrow(owner_price))
+options(scipen = 999)
+
+#barplot
+barplot(owner_price$avg_price, names.arg = owner_price$no_own, main = "Distribution Of Prices by Numbers of Previous Owners",
+        xlab = "Number of Owners", ylab = "Price",
+        col = colors_blyl, ylim = c(0, max(owner_price$avg_price)* 1.1))
+abline(h = mean(owner_price$avg_price),lyt = 3, lwd = 3 )
+```
+
+Group by fuel type and count occurance
+
+```{r}
+fuel_distribution <- combined_cars%>%
+  group_by(fuel_type)%>%
+  summarise(fuel_count = n())%>%
+  arrange(desc(fuel_count))
+
+# Create a bar plot with colors
+colors<- colorRampPalette(c("#ff5733", "#ffc300", "#DAf7A6"))(nrow(fuel_distribution))
+
+
+#create a bar plot with colors
+barplot(fuel_distribution$fuel_count,
+        names.arg = fuel_distribution$fuel_type,
+        col = colors,
+        main = "Distribution of Fuel Type",
+        xlab = "Fuel Type",
+        ylab = "Count")
+
+```
+
+Average selling price by fuel type
+
+```{r}
+fuel_price <- combined_cars%>%
+  group_by(fuel_type)%>%
+  summarise(avg_price = round(mean(Selling_price), 0))%>%
+  arrange(desc(avg_price))
+
+#define color gradient
+colors_blyl <- colorRampPalette(c("#0000FF", "#ADD8E6"))(nrow(fuel_price))
+
+
+#plotting the barplot 
+barplot(fuel_price$avg_price,
+        names.arg = fuel_price$fuel_type,
+        col = colors_blyl,
+        main = "Average selling price by Fuel Type",
+        xlab = "fuel type",
+        ylab = "Average price",
+        ylim = c(0, max(fuel_price$avg_price)*1.4)) # use avg_price for y_axis limit
+ 
+#adding a horizontal line at the overall average price
+abline(h = mean(fuel_price$avg_price),lty = 2,lwd = 2)
+
+options(scipens = 999)
+
+ggplot(fuel_price, aes(x = reorder(fuel_type,-avg_price), y = avg_price ))+ geom_bar(stat = "identity", fill = "lightblue", color = "black") + 
+  labs(title = "Average selling price by fuel type", 
+       x = "Fuel type",
+       y = "Average price")+
+  theme_minimal()
+```
+
+price Distribution
+
+```{r}
+#distribution of force 
+ggplot(combined_cars, aes(x = Selling_price))+
+  geom_histogram(bins = 45,fill = "lightblue",colors = "black")+
+  geom_vline(xintercept = mean(combined_cars$Selling_price),
+             linetype = "dashed", color = "red", lwd = 1)+
+  geom_vline(xintercept = median(combined_cars$Selling_price),
+             linetype = "dashed", color = "blue", lty = 3, lwd = 1 )+
+  labs(title = "Distribution of car Price", x = "selling_price", y = "count")+
+  theme_minimal()
+```
+
+Relationship Between kilometer Driven and Price
+
+```{r}
+ggplot(combined_cars, aes(x = Year_mfd, y = Selling_price, colors = fuel_type))+
+  geom_point(alpha = 1.5)+
+  labs(title = "Price vs Year maunfactured",
+       y = "selling_price")+
+  theme_bw()
+```
+
+Correlation between price and kilometer driven
+
+```{r}
+#scatter plot to show the relationship between price and kilometer driven 
+ggplot(combined_cars, aes(x = km_drv,y= Selling_price))+
+  geom_point(alpha = 0.5, color = "blue")+ #point with some transparency
+  labs(title = "Correlation Between Price And Kilometer Driven",
+       x = "Kilometer driven",
+       y = "selling price")+
+  theme_minimal()
+
+```
+
+```{r}
+cor_matrix <- cor(combined_cars[, c("Year_mfd","km_drv","Selling_price")])
+
+ggcorplot(cor_matrix, method = "square", digits = 2, lab = T)
+```
