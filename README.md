@@ -46,7 +46,7 @@ The columns of each dataset are reordered to ensure consistency across all datas
 
 -   Car_2:
 
-\* The Owner column is recoded to more descriptive values (e.g., "0" to "First owner").
+\* The Owner column is re_coded to more descriptive values (e.g., "0" to "First owner").
 
 \* The Selling_price column is converted from a double to a numeric type after multiplying by 10000 and rounding to two decimal places. This step assumes the original values were in a different unit (e.g., lakhs or thousands).
 
@@ -54,7 +54,7 @@ The columns of each dataset are reordered to ensure consistency across all datas
 
 \* The Make and Model columns are combined into a single Name column.
 
-\* The Owner column is recoded to consistent values, handling variations like "First," "Second," "Third," "Fourth," and "4 or More."
+\* The Owner column is re_coded to consistent values, handling variations like "First," "Second," "Third," "Fourth," and "4 or More."
 
 4\. Data Combination:
 
@@ -78,4 +78,4 @@ install.packages(c("dplyr", "tidyr"))
 
 Output
 
-The script generates a CSV file named "combined_cars.csv"containing the combined and preprocessed car data. It also prints the first few rows of the read-back data to the console.
+The script generates a CSV file named "combined_cars.csv"containing the combined and pre_processed car data. It also prints the first few rows of the read-back data to the console.

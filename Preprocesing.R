@@ -100,6 +100,4 @@ write.csv(combined_cars,"combined_cars.csv", row.names = FALSE)
 my_data <- read.csv("combined_cars.csv")
 print(my_data)
 
-View(combined_cars)
-combined_cars %>% count(no_own)
 
