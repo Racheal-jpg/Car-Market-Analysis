@@ -58,11 +58,11 @@ The columns of each dataset are reordered to ensure consistency across all datas
 
 4\. Data Combination:
 
-The four processed data frames (car_1, Car_2, Car_3, and Car_4) are combined into a single data frame called combined_cars using rbind().
+The four processed data frames (car_1, Car_2, Car_3, and Car_4) are combined into a single data frame called combined_cars using r-bind().
 
 5\. Data Inspection:
 
-The script includes View() and str() calls to inspect the resulting combined_cars data frame and check its structure. This allows for verification of the data cleaning and preprocessing steps.
+The script includes View() and str() calls to inspect the resulting combined_cars data frame and check its structure. This allows for verification of the data cleaning and pre-processing steps.
 
 \## Usage
 
@@ -70,7 +70,7 @@ The script includes View() and str() calls to inspect the resulting combined_car
 
 2\. Install the dplyr and tidyr packages if you haven't already:
 
-\`\`\`R
+R
 
 install.packages(c("dplyr", "tidyr"))
 
