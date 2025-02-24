@@ -8,19 +8,19 @@ This R script performs data cleaning and preprocessing on four car datasets (car
 
 #### Libraries
 
-\* dplyr: For data manipulation and transformation.
+\* `dplyr`: For data manipulation and transformation.
 
-\* tidyr: For tidying data.
+\* `tidyr`: For tidying data.
 
--   Data Preprocessing Steps
+-   `Data Preprocessing Steps`
 
 The script performs the following steps for each dataset:
 
-1.  Column Reordering:
+1.  `Column Reordering`:
 
 The columns of each dataset are reordered to ensure consistency across all datasets before combining. The desired order is: Name, Year_mfd, km_drv, fuel_type, seller_type, transmission, no_own, Selling_price.
 
-2\. Column Renaming:
+2.`Column Renaming`:
 
 ### Columns are renamed for clarity and consistency:
 
@@ -56,11 +56,11 @@ The columns of each dataset are reordered to ensure consistency across all datas
 
 \* The Owner column is re_coded to consistent values, handling variations like "First," "Second," "Third," "Fourth," and "4 or More."
 
-4\. Data Combination:
+4\. `Data Combination`:
 
 The four processed data frames (car_1, Car_2, Car_3, and Car_4) are combined into a single data frame called combined_cars using r-bind().
 
-5\. Data Inspection:
+5.`Data Inspection`:
 
 The script includes View() and str() calls to inspect the resulting combined_cars data frame and check its structure. This allows for verification of the data cleaning and pre-processing steps.
 
@@ -79,3 +79,19 @@ install.packages(c("dplyr", "tidyr"))
 Output
 
 The script generates a CSV file named "combined_cars.csv"containing the combined and pre_processed car data. It also prints the first few rows of the read-back data to the console.
+
+libraries
+
+you'll need to install the following R libraries for the code we've built up:
+
+1.  `ggplot2`: for creating high-quality visualization.
+
+2.  `randomForest`: For the Random Forest algorithms.
+
+3.  `xgboost`: For the gradient Boosting (XGBoost) algorithms.
+
+4.  `e1071`:For the support vector machines (SVMs), including SVR.
+
+5.  `pracma`: For the Hampel filter for outlier detection.
+
+6.  `ggcorrplot`: For correlation Heatmaps.

@@ -20,9 +20,9 @@ combined_cars$no_own <- as.factor(combined_cars$no_own)
 combined_cars$car_age <- 2025 - combined_cars$Year_mfd#car age instead of year manufactured
 
 #feature selection
-numeric_cols <- names(combined_cars)[sapply(all_cars,is.numeric)]
+numeric_cols <- names(combined_cars)[sapply(combined_cars,is.numeric)]
 cor_matrix <- cor(combined_cars[, numeric_cols], use = "pairwise.complete.obs")#Handle NAs in correlation
-print(cor_matrix)
+ggcorrplot(cor_matrix, method = "square", digits = 2, lab = TRUE)
 
 #keeping the numerical features with the corr values > 0.2 
 high_cor_feature <- names(cor_matrix[abs(cor_matrix["Selling_price",]) > 0.2, "Selling_price"])
@@ -53,4 +53,43 @@ combined_cars_selected <- combined_cars[, c("Selling_price",selected_features)]#
 print(names(combined_cars_selected))
 
 
+# Now Splitting the data.
+set.seed(300) # For Reproducibility
+n <- nrow(all_cars)
+train_idx <- sample(1:n , 0.7 * n)
+# split into train and test data
+train_data <- all_cars[train_idx, ]
+test_data <- all_cars[-train_idx, ]
+
+# Model Building: for building this model we are going to be considering three model algorithms[Logistic Regression, Random Forest, Extreme Gradient Boosting].
+# Linear Regression
+linear_model <- lm(Selling_price ~ ., data = train_data)
+summary(linear_model)
+
+# Random Forest
+rf_model <- randomForest(Selling_price ~ ., data = train_data, ntree = 100, importance=TRUE)
+print(rf_model)
+
+# Extreme Gradient Boosting
+train_matrix <- model.matrix(Selling_price ~ .-1, data = train_data)
+test_matrix <- model.matrix(Selling_price ~ .-1, data = test_data)
+
+xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, nrounds = 100, objective = "reg:squarederror")
+
+# Model Evaluation
+linear_predictions <- predict(linear_model, newdata = test_data)
+rf_predictions <- predict(rf_model, newdata = test_data)
+xgb_predictions <- predict(xgb_model, newdata = test_matrix)
+
+# Evaluation metrics: Function calculate Root mean squared value
+calculate_rmse <- function(actual, predicted) {
+  sqrt(mean((actual - predicted)^2, na.rm = TRUE))}
+
+linear_rmse <- calculate_rmse(test_data$Selling_price, linear_predictions)
+rf_rmse <- calculate_rmse(test_data$Selling_price, rf_predictions)
+xgb_rmse <- calculate_rmse(test_data$Selling_price, xgb_predictions)
+
+cat("Linear Regression RMSE:", linear_rmse, "\n")
+cat("Random Forest RMSE:", rf_rmse, "\n")
+cat("XGBoost RMSE:", xgb_rmse, "\n")
 
