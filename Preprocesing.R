@@ -62,7 +62,7 @@ Car_3 <- Car_3[, c("name","year","km_driven","fuel","seller_type","transmission"
 colnames(Car_3)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transmission","no_own","Selling_price")
 
 
-#combining two colums together for car_4
+#combining two columns together for car_4
   Car_4$Name<- paste(Car_4$Make,Car_4$Model, sep = " ")
 print(Car_4)
 

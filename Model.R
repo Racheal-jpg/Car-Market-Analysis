@@ -93,3 +93,40 @@ cat("Linear Regression RMSE:", linear_rmse, "\n")
 cat("Random Forest RMSE:", rf_rmse, "\n")
 cat("XGBoost RMSE:", xgb_rmse, "\n")
 
+# Plotting predicted vs. actual values (example for Random Forest)
+plot(test_data$Selling_price, rf_predictions, 
+     xlab = "Actual Selling Price", ylab = "Predicted Selling Price",
+     main = "Actual vs. Predicted (Random Forest)", col="blue", pch=16)
+abline(0, 1, col = "red")
+
+# Further Evaluation: Example - Feature Importance for Random Forest
+importance(rf_model)
+varImpPlot(rf_model)
+
+# Compare model performance visually 
+rmse_df <- data.frame(
+  Model = c("Linear Regression", "Random Forest", "XGBoost"),
+  RMSE = c(linear_rmse, rf_rmse, xgb_rmse)
+)
+
+ggplot(rmse_df, aes(x = Model, y = RMSE)) +
+  geom_col(fill = "skyblue", color = "black") +
+  labs(title = "RMSE Comparison", x = "Model", y = "RMSE") + theme_bw()
+
+#lets test with random rows
+set.seed(20)
+rmd_rows <- combined_cars[sample(nrow(combined_cars), size = 5), ]
+
+rf_predictions<-predict(rf_model, newdata = rdm_rows)
+linear_predictions<- predict(linear_model, newdata = random_rows)
+
+# create a data frame for easy comparison
+prediction_df <- data.frame(
+  Actual = random_rows$Selling_price,
+  randomForest = rf_predictions,
+  LinearRegression = linear_predictions
+)
+
+#print the predictions
+print(prediction_df)
+
